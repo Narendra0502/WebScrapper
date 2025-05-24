@@ -16,10 +16,16 @@ from io import BytesIO
 app = Flask(__name__)
 
 # Initialize MongoDB connection
-# client = MongoClient('mongodb://localhost:27017/')
-client = MongoClient("mongodb+srv://nkaushik0502:5nZlQTsOKDZS8703@cluster0.n20wv.mongodb.net/CityAssist?retryWrites=true&w=majority&appName=Scrapper/"
-)
-db = client['events_db']
+# Load environment variables
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load environment variables from .env file
+
+# Use environment variable for MongoDB connection
+mongo_uri = os.getenv('MONGO_URI')
+client = MongoClient(mongo_uri)
+db = client['Scraper']
 events_collection = db['events']
 subscribers_collection = db['subscribers']
 
