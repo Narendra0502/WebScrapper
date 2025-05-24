@@ -16,16 +16,24 @@ from io import BytesIO
 app = Flask(__name__)
 
 # Initialize MongoDB connection
-client = MongoClient('mongodb://localhost:27017/')
+# client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient("mongodb+srv://nkaushik0502:5nZlQTsOKDZS8703@cluster0.n20wv.mongodb.net/CityAssist?retryWrites=true&w=majority&appName=Scrapper/"
+)
 db = client['events_db']
 events_collection = db['events']
 subscribers_collection = db['subscribers']
 
 def scrape_events():
-    # Set up Selenium WebDriver
+    # Set up Selenium WebDriver with headless option
     options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    
+    # Use this for Render deployment
+    driver = webdriver.Chrome(options=options)
+    
     # Open the target website
     url = "https://www.eventbrite.com/d/australia--sydney/events/"
     driver.get(url)
